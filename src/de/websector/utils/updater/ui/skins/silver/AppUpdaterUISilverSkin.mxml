@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<s:Skin 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo"
+	minWidth="500" minHeight="330"
+	>
+	
+	<fx:Metadata>
+		<![CDATA[ 
+		[HostComponent("de.websector.utils.updater.ui.ApplicationUpdaterUI")]	
+		[ResourceBundle("ApplicationUpdaterDialogs")]
+		]]>
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[         
+			import mx.graphics.SolidColor;
+			
+			private static const CONTENT_BOX_WIDTH: int = 340;
+			
+		]]>        
+	</fx:Script>
+	
+	<!-- states -->
+	<s:states>
+		
+		<s:State 
+			name="checkForUpdate" 
+			stateGroups="button0isUsedState" 
+			/>
+		
+		<s:State 
+			name="noUpdateAvailable" 
+			/>
+		
+		<s:State 
+			name="updateAvailable" 
+			stateGroups="button0isUsedState" 
+			/>
+		<s:State 
+			name="downloadProgress"
+			/>
+		
+		<s:State 
+			name="installUpdate" 
+			stateGroups="button0isUsedState" 
+			/>
+		
+		<s:State 
+			name="updateError" 
+			stateGroups="errorState" 
+			/>
+		<s:State 
+			name="unexpectedError" 
+			stateGroups="errorState" 
+			/>
+		<s:State 
+			name="downloadError" 
+			stateGroups="errorState" 
+			/>
+		<s:State 
+			name="fileError" 
+			stateGroups="errorState" 
+			/>
+		
+		
+	</s:states>
+	
+	
+	<!-- bg 1 -->
+	<s:Rect 
+		id="bg" 
+		width="100%" height="100%"
+		fill="{ new SolidColor( 0xE6E6E6 ) }"
+		/>
+	
+	<!-- bg 2 -->
+	<s:Rect 
+		id="bg2" 
+		left="15" right="15" top="15" bottom="15"
+		fill="{ new SolidColor( 0xE6E6E6 ) }"
+		>
+		
+		<s:filters>
+			<s:DropShadowFilter 
+				angle="45" 
+				color="0" 
+				distance="0"
+				quality="90" 
+				alpha=".25" 
+				blurX="8" blurY="8"
+				/>			
+		</s:filters>
+	</s:Rect>	
+	
+	<s:BitmapImage
+		id="iconImage" 
+		left="35" top="45"
+		source="@Embed('/assets/png/UpdateIcon.png')" 
+		width='81' height='74'
+		/>
+	
+	
+	<s:Group
+		left="140" right="35"
+		top="45" bottom="35"
+		>
+		
+		<s:VGroup
+			width="{ CONTENT_BOX_WIDTH }"
+			height="100%"
+			gap="15"
+			>
+			
+			
+			<s:Label
+				id="headline"
+				width="{ CONTENT_BOX_WIDTH }"
+				text=""
+				text.checkForUpdate="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleCheck' ) }"
+				text.noUpdateAvailable="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleCheckNoUpdates' ) }"
+				text.updateAvailable="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleUpdate' ) }"
+				text.installUpdate="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleInstall' ) }"
+				text.downloadProgress="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleProgress' ) }"
+				text.updateError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleCheckError' ) }"
+				text.downloadError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleDownloadError' ) }"
+				text.unexpectedError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleUnexpectedError' ) }"
+				text.fileError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleFileError' ) }"
+				color="#525252"
+				fontSize="19"
+				fontFamily="Verdana"
+				/>
+			
+			<s:Label
+				id="description"
+				width="{ CONTENT_BOX_WIDTH }"
+				text.checkForUpdate="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgCheck' ) }"
+				text.noUpdateAvailable="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgCheckNoUpdates' ) }"
+				text.updateAvailable="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgUpdate' ) }"
+				text.installUpdate="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgInstall' ) }"
+				text.downloadProgress="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgProgress' ) }"
+				text.updateError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgCheckError', [ hostComponent.errorID ] ) }"
+				text.downloadError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgDownloadError', [ hostComponent.errorID ] ) }"
+				text.unexpectedError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgUnexpectedError', [ hostComponent.errorID ] ) }"
+				text.fileError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgFileError', [ hostComponent.errorID ] ) }"
+				color="#525252"
+				fontFamily="Verdana"
+				fontSize="11"
+				lineBreak="toFit"			
+				/>
+			
+			<s:RichText
+				id="appInfo"
+				width="{ CONTENT_BOX_WIDTH }"
+				color="#525252"
+				fontFamily="Verdana"
+				fontSize="11"	
+				includeIn="updateAvailable"
+				>
+				<s:content>			
+					<s:p><s:span fontStyle="bold">{ resourceManager.getString('ApplicationUpdaterDialogs', 'lblApplication' ) + ' '}</s:span> { hostComponent.appName }</s:p>
+					<s:p><s:span fontStyle="bold">{ resourceManager.getString('ApplicationUpdaterDialogs', 'lblInstalledVersion' ) + ' '}</s:span> { hostComponent.installedVersion }</s:p>
+					<s:p><s:span fontStyle="bold">{ resourceManager.getString('ApplicationUpdaterDialogs', 'lblAvailableVersion' ) + ' '}</s:span> { hostComponent.updateVersion }</s:p>
+				</s:content>
+			</s:RichText>
+			
+			
+			<s:VGroup
+				width="100%"
+				includeIn="updateAvailable"
+				>
+				<s:Label
+					id="subHeadlineRelease"
+					text="{ resourceManager.getString('ApplicationUpdaterDialogs', 'lnkReleaseNotes' ) }"
+					color="#525252"
+					fontFamily="Verdana"
+					fontSize="11"
+					includeIn="updateAvailable"
+					/>
+				
+				<s:TextArea
+					id="releaseTxt"
+					width="100%"
+					height="60"
+					color="#525252"
+					fontFamily="Verdana"
+					fontSize="11"
+					contentBackgroundColor="0xE6E6E6"
+					includeIn="updateAvailable"
+					text="{ hostComponent.updateDescription }"
+					/>
+				
+			</s:VGroup>
+			
+			<mx:ProgressBar
+				id="progressBar"
+				height="15"
+				width="100%"
+				includeIn="downloadProgress"
+				label="" labelWidth="0" fontSize="0"
+				trackSkin="de.websector.utils.updater.ui.skins.silver.ProgressBarTrackSkin"
+				barSkin="de.websector.utils.updater.ui.skins.silver.ProgressBarSkin"
+				/>
+			
+			
+		</s:VGroup>
+		
+		<!-- buttons -->
+		<s:HGroup
+			id="bContainer"
+			bottom="0"
+			>
+			
+			<s:Button
+				id="button0"
+				height="34"
+				skinClass="de.websector.utils.updater.ui.skins.silver.ButtonSkin"
+				includeIn="button0isUsedState"
+				label.checkForUpdate="{ resourceManager.getString('ApplicationUpdaterDialogs', 'btnCheck' ) }"
+				label.updateAvailable="{ resourceManager.getString('ApplicationUpdaterDialogs', 'btnDownloadLater' ) }"
+				label.installUpdate="{ resourceManager.getString('ApplicationUpdaterDialogs', 'btnInstall' ) }"
+				/>
+			
+			<s:Button
+				id="button1"
+				skinClass="de.websector.utils.updater.ui.skins.silver.ButtonSkin"
+				height="34"
+				label="{ resourceManager.getString('ApplicationUpdaterDialogs', 'btnCancel' ) }"
+				label.updateError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'btnClose' ) }"
+				label.noUpdateAvailable="{ resourceManager.getString('ApplicationUpdaterDialogs', 'btnClose' ) }"
+				label.updateAvailable="{ resourceManager.getString('ApplicationUpdaterDialogs', 'btnDownload' ) }"
+				label.installUpdate="{ resourceManager.getString('ApplicationUpdaterDialogs', 'btnInstallLater' ) }"
+				/>
+			
+		</s:HGroup>			
+		
+	</s:Group>
+	
+</s:Skin>

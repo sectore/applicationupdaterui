@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:mx="library://ns.adobe.com/flex/halo"
+		minHeight="34" minWidth="50"
+		alpha.disabled="0.5"
+		>
+
+	<!-- host component -->
+	<fx:Metadata>
+		[HostComponent("spark.components.Button")]
+	</fx:Metadata>
+	
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.graphics.SolidColor;
+			import mx.graphics.SolidColorStroke;
+			
+			/**
+			 *  @inheritDoc
+			 * 
+			 */	 
+			override public function get colorizeExclusions():Array 
+			{
+				return ["labelDisplay"];
+			}
+		]]>
+	</fx:Script>
+
+	
+	<!-- states -->	
+	<s:states>
+		<s:State name="up" />
+		<s:State name="over" />
+		<s:State name="down" />
+		<s:State name="disabled" />
+	</s:states>	
+	
+	<!-- bg 1 -->
+	
+	<s:Rect
+		id="bg"
+
+		fill="{ new SolidColor( 0xEFEFEF ) }"
+		stroke="{ new SolidColorStroke( 0x686868 ) }"
+		width="100%" height="100%"
+		/>
+	
+	
+	<!-- bg 2 -->
+	<s:Rect 
+		height="100%" width="100%"
+		left="3" top="3" right="3" bottom="3"
+		>
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry 
+					color="#F9F9F9" 
+					color.over="#DCDCDC" 
+					color.down="#DCDCDC" 
+					ratio="0"
+					/>
+				<s:GradientEntry
+					color="#DCDCDC" 
+					color.over="#F9F9F9" 
+					color.down="#F9F9F9" 
+					ratio="1"
+					/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>	
+	
+	
+	
+	<!-- label -->
+	<s:Label 
+		id="labelDisplay"
+		horizontalCenter="0" verticalCenter="1"
+		left="15" right="15" 
+		top="5" bottom="5"
+		textAlign="center"
+		verticalAlign="middle"
+		color="#525252"
+		fontSize="14"
+		fontFamily="Verdana"
+		/>
+	
+	
+	
+</s:SparkSkin>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<componentPackage>
+
+
+    <component id="ApplicationUpdaterUI" class="de.websector.utils.updater.ui.ApplicationUpdaterUI" />
+    
+    <component id="AppUpdaterUIStandardSkin" class="de.websector.utils.updater.ui.skins.standard.AppUpdaterUIStandardSkin" />
+    <component id="StandardButtonSkin" class="de.websector.utils.updater.ui.skins.standard.ButtonSkin" />
+    <component id="StandardProgressBarSkin" class="de.websector.utils.updater.ui.skins.standard.ProgressBarSkin" />
+    <component id="StandardProgressBarTrackSkin" class="de.websector.utils.updater.ui.skins.standard.ProgressBarTrackSkin" />
+
+    <component id="AppUpdaterUISilverSkin" class="de.websector.utils.updater.ui.skins.silver.AppUpdaterUISilverSkin" />
+    <component id="SilverButtonSkin" class="de.websector.utils.updater.ui.skins.silver.ButtonSkin" />
+    <component id="SilverProgressBarSkin" class="de.websector.utils.updater.ui.skins.silver.ProgressBarSkin" />
+    <component id="SilverProgressBarTrackSkin" class="de.websector.utils.updater.ui.skins.silver.ProgressBarTrackSkin" />
+    
+    <component id="AppUpdaterUIFirefoxSkin" class="de.websector.utils.updater.ui.skins.firefox.AppUpdaterUIFirefoxSkin" />
+    <component id="FirefoxButtonSkin" class="de.websector.utils.updater.ui.skins.firefox.ButtonSkin" />
+    <component id="FirefoxProgressBarSkin" class="de.websector.utils.updater.ui.skins.firefox.ProgressBarSkin" />
+    <component id="FirefoxProgressBarTrackSkin" class="de.websector.utils.updater.ui.skins.firefox.ProgressBarTrackSkin" />
+
+    <component id="LocaleUtil" class="com.adobe.utils.LocaleUtil" />
+    
+</componentPackage>
