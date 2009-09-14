@@ -23,17 +23,37 @@ package de.websector.utils.updater.ui
 		import spark.components.supportClasses.TextBase;
 		import com.adobe.utils.LocaleUtil;
 		
-		[SkinState("checkForUpdate")]
-		[SkinState("updateAvailable")]
-		[SkinState("noUpdateAvailable")]
-		[SkinState("downloadProgress")]
 		
+		/**
+		 *  Check for updated State
+		 */
+		[SkinState("checkForUpdate")]
+		/**
+		 *  Update is available state
+		 */
+		[SkinState("updateAvailable")]
+		/**
+		 *  Update is not available state
+		 */		
+		[SkinState("noUpdateAvailable")]
+		/**
+		 *  Downloading state (including start, progressing, end)
+		 */
+		[SkinState("downloadProgress")]
+		/**
+		 *  Install update state
+		 */
 		[SkinState("installUpdate")]
 		
+		/**
+		 *  Misc. error states
+		 */
 		[SkinState("updateError")]
 		[SkinState("unexpectedError")]
 		[SkinState("downloadError")]
 		[SkinState("fileError")]
+		
+		
 		
 		public class ApplicationUpdaterUI extends SkinnableContainer
 		{	
@@ -62,6 +82,7 @@ package de.websector.utils.updater.ui
 			[Bindable]
 			public var appName: String = '';
 
+			
 			[Bindable]
 			public var updateDescription: String = '';
 			
@@ -98,26 +119,42 @@ package de.websector.utils.updater.ui
 			
 			//
 			// skin parts
-			
-			[SkinPart(required="false")]
-			public var displayLabel: TextBase;
-			
-			[SkinPart(required="false")]
-			public var infoText: TextBase;
-			
+			/**
+			 * A button for handling user activities
+			 * Note: Because in most of all skin states and to simplify creating custom skins, 
+			 * there are at most buttons required for the most actions
+			 */			
 			[SkinPart(required="true")]
 			public var button0: Button;
-			
+			/**
+			 * A second button for handling user activities
+			 * Note: Because in most of all skin states and to simplify creating custom skins, 
+			 * there are at most two buttons required for the most actions
+			 */			
 			[SkinPart(required="true")]
 			public var button1: Button;
 			
+			/**
+			 * TextBase component which can be used as a headline within the skin
+			 */
+			[SkinPart(required="false")]
+			public var displayLabel: TextBase;
+			/**
+			 * TextBase component which can be used as a headline within the skin
+			 */
+			[SkinPart(required="false")]
+			public var infoText: TextBase;
+			/**
+			 * ProgressBar
+			 */			
 			[SkinPart(required="false")]
 			public var progressBar: ProgressBar;
 			
 			
 			/**
 			 * A custom updater ui for air applications using Adobes AIR update framework.
-			 * It handles custom windows and views. The views can be embedded directly within the application without the needs of extra windows.
+			 * It handles custom windows or views. 
+			 * The views can be embedded directly within the application without the needs of extra windows.
 			 * 
 			 */	
 			public function ApplicationUpdaterUI( 	configurationFile: File = null,
@@ -137,9 +174,21 @@ package de.websector.utils.updater.ui
 				if( getStyle('skinClass') == undefined )
 					setStyle("skinClass", AppUpdaterUIStandardSkin);
 				
-			}
+			}			
 			
 			
+			
+			//--------------------------------------------------------------------------
+			//
+			// life cycle
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			/**
+			 * @inherit
+			 *  
+			 */
 			override protected function commitProperties():void
 			{		
 				if ( invisibleCheckChanged )
@@ -155,9 +204,85 @@ package de.websector.utils.updater.ui
 				
 				
 				super.commitProperties();
+			}		
+			
+			
+			
+			/**
+			 * @inherit
+			 *  
+			 */			
+			override protected function partAdded(partName:String, instance:Object):void
+			{
+				super.partAdded(partName, instance);
+				
+				if (instance == button0 )
+				{
+					button0.addEventListener( MouseEvent.CLICK, button0ClickHandler );
+				}
+				if (instance == button1 )
+				{
+					button1.addEventListener( MouseEvent.CLICK, button1ClickHandler );
+				}
 			}
 			
 			
+			/**
+			 * @inherit
+			 *  
+			 */			
+			override protected function partRemoved(partName:String, instance:Object):void
+			{
+				
+				if (instance == button0 )
+				{
+					button0.removeEventListener( MouseEvent.CLICK, button0ClickHandler );			
+				}
+				else if (instance == button1 )
+				{
+					button1.removeEventListener( MouseEvent.CLICK, button1ClickHandler );			
+				}
+				
+				super.partRemoved(partName, instance);
+			}
+			
+			
+			/**
+			 * @inherit
+			 *  
+			 */
+			override protected function getCurrentSkinState():String
+			{
+				return currentSkinState;
+				
+			}
+			
+			
+			/**
+			 * Helper method to set current skin state
+			 * @param	newState	String of new skin state 
+			 * 
+			 */
+			protected function setCurrentSkinState( newState: String ):void
+			{
+				currentSkinState = newState;
+				
+				invalidateSkinState();
+				
+			}
+
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			// update handling
+			//
+			//--------------------------------------------------------------------------			
+			
+			/**
+			 * Creates and initializes an instance of ApplicationUpdater
+			 * 
+			 */
 			protected function initUpdater():void
 			{
 				
@@ -186,7 +311,11 @@ package de.websector.utils.updater.ui
 				appUpdater.initialize();
 				
 			}	
-			
+
+			/**
+			 * Disposes the ApplicationUpdater
+			 * 
+			 */
 			protected function disposeUpdater():void
 			{
 				if ( appUpdater )
@@ -212,142 +341,13 @@ package de.websector.utils.updater.ui
 					
 				}
 				
-			}	
-			
-			
-			
-			
-			//--------------------------------------------------------------------------
-			//
-			// life cycle
-			//
-			//--------------------------------------------------------------------------
-			
-			
-			
-			
-			override protected function partAdded(partName:String, instance:Object):void
-			{
-				super.partAdded(partName, instance);
-				
-				if (instance == button0 )
-				{
-					button0.addEventListener( MouseEvent.CLICK, button0ClickHandler );
-				}
-				if (instance == button1 )
-				{
-					button1.addEventListener( MouseEvent.CLICK, button1ClickHandler );
-				}
 			}
 			
 			
-			
-			override protected function partRemoved(partName:String, instance:Object):void
-			{
-				
-				if (instance == button0 )
-				{
-					button0.removeEventListener( MouseEvent.CLICK, button0ClickHandler );			
-				}
-				else if (instance == button1 )
-				{
-					button1.removeEventListener( MouseEvent.CLICK, button1ClickHandler );			
-				}
-				
-				super.partRemoved(partName, instance);
-			}
-			
-			
-			override protected function getCurrentSkinState():String
-			{
-				return currentSkinState;
-			}
-			
-			protected function setCurrentSkinState( newState: String ):void
-			{
-				currentSkinState = newState;
-				
-				invalidateSkinState();
-				
-			}
-			
-			protected function button0ClickHandler( event: MouseEvent ):void
-			{
-				switch( currentSkinState )
-				{
-					case STATE_CHECK_FOR_UPDATE:
-						// check now
-						appUpdater.checkNow();
-						break;
-					
-					case STATE_UPDATE_AVAILABLE:
-						// hide to download later
-						hide();
-						break;				
-					
-					case STATE_INSTALL_UPDATE:
-						// install now
-						isInstallPostponed = false;
-						appUpdater.installUpdate();
-						break;
-					
-					default:
-						
-						
-				}
-			}
-			
-			protected function button1ClickHandler( event: MouseEvent ):void
-			{
-				
-				switch( currentSkinState )
-				{
-					case STATE_CHECK_FOR_UPDATE:
-						// cancel
-						hide();
-						break;
-					case STATE_UPDATE_NOT_AVAILABLE:
-						// close
-						hide();	
-						break;	
-					case STATE_UPDATE_AVAILABLE:
-						// download now
-						appUpdater.downloadUpdate();	
-						break;
-					case STATE_DOWNLOAD_PROGRESS:
-						// close
-						hide();
-						break;
-					
-					case STATE_INSTALL_UPDATE:
-						// install later
-						isInstallPostponed = true;
-						appUpdater.installUpdate();						
-						hide( false );
-						break;
-					
-					case STATE_UPDATE_ERROR:
-					case STATE_FILE_ERROR:
-					case STATE_UNEXPECTED_ERROR:
-					case STATE_DOWNLOAD_ERROR:
-						// close
-						hide();	
-						break;
-					
-					default:				
-						// close
-						hide();	
-						
-				}
-			}
-			
-			
-			//--------------------------------------------------------------------------
-			//
-			// update handling
-			//
-			//--------------------------------------------------------------------------			
-			
+			/**
+			 * Checking for updates
+			 * 
+			 */
 			public function checkNow():void
 			{
 				//
@@ -376,7 +376,11 @@ package de.websector.utils.updater.ui
 			}		
 			
 			
-			
+			/**
+			 * Handling of errors
+			 * 
+			 * 
+			 */			
 			protected function updaterErrorHandler( event: Event ):void
 			{
 				
@@ -419,7 +423,11 @@ package de.websector.utils.updater.ui
 				
 			}
 			
-			
+			/**
+			 * Callback if ApplicationUpdater is initialized
+			 * 
+			 * 
+			 */
 			protected function updaterInitializedHandler( event: UpdateEvent ):void
 			{
 				appUpdaterInitialized = true;
@@ -429,7 +437,13 @@ package de.websector.utils.updater.ui
 				
 			}	
 			
-			
+
+			/**
+			 * Callback for handling updater status
+			 * 
+			 * @param	event	StatusUpdateEvent Dispatched by ApplicationUpdater
+			 * 
+			 */
 			protected function updaterStatusHandler( event : StatusUpdateEvent ):void
 			{			
 				if ( event.available )
@@ -462,7 +476,12 @@ package de.websector.utils.updater.ui
 				}
 			}
 			
-			
+			/**
+			 * Callback for starting download process by ApplicationUpdater
+			 * 
+			 * @param	event	UpdateEvent 	Dispatched by ApplicationUpdater
+			 * 
+			 */			
 			protected function updaterDownloadStartHandler( event: UpdateEvent ):void 
 			{
 				setCurrentSkinState( STATE_DOWNLOAD_PROGRESS );
@@ -470,14 +489,25 @@ package de.websector.utils.updater.ui
 				if ( progressBar != null )
 					progressBar.setProgress( 0, 100 );
 			}
-			
+
+			/**
+			 * Callback for updating download process
+			 * 
+			 * @param	event	ProgressEvent 	Dispatched by ApplicationUpdater
+			 * 
+			 */	
 			protected function updaterDownloadProgressHandler( event: ProgressEvent ):void 
 			{			
 				if ( progressBar != null )
 					progressBar.setProgress( event.bytesLoaded, event.bytesTotal );
 			}
 			
-			
+			/**
+			 * Callback for completing download process
+			 * 
+			 * @param	event	UpdateEvent 	Dispatched by ApplicationUpdater
+			 * 
+			 */				
 			protected function updaterDownloadCompleteHandler( event: UpdateEvent ):void 
 			{
 				//
@@ -488,7 +518,12 @@ package de.websector.utils.updater.ui
 				setCurrentSkinState( STATE_INSTALL_UPDATE );
 			}
 			
-			
+			/**
+			 * Callback for handling install process now or after restart
+			 * 
+			 * @param	event	UpdateEvent 	Dispatched by ApplicationUpdater
+			 * 
+			 */				
 			protected function updaterBeforeInstallHandler( event: UpdateEvent ):void 
 			{
 				if ( isInstallPostponed ) 
@@ -499,7 +534,8 @@ package de.websector.utils.updater.ui
 				
 			}
 			
-			
+
+
 			
 			
 			//--------------------------------------------------------------------------
@@ -509,6 +545,12 @@ package de.websector.utils.updater.ui
 			//--------------------------------------------------------------------------	
 			
 			
+			/**
+			 * Show view 
+			 * 
+			 * Note: If you wan't to implement any other behavior of your view, just override this method
+			 * 
+			 */				
 			protected function show():void
 			{
 				if ( useWindow )
@@ -523,7 +565,15 @@ package de.websector.utils.updater.ui
 				
 				
 			}
-			
+
+			/**
+			 * Hide view 
+			 * 
+			 * @param	cancelUpdate	Flag if the update process has to be interrupted immediately hiding the view
+			 * 
+			 * Note: If you wan't to implement any other behavior of your view, just override this method
+			 * 
+			 */	
 			protected function hide( cancelUpdate: Boolean = true ):void
 			{
 				if ( !isInstallPostponed && cancelUpdate ) 
@@ -536,7 +586,10 @@ package de.websector.utils.updater.ui
 					this.visible = this.includeInLayout = false;
 			}
 			
-			
+			/**
+			 * Creating an AIR window 
+			 * 
+			 */				
 			protected function createWindow():void
 			{
 				
@@ -558,6 +611,10 @@ package de.websector.utils.updater.ui
 			}
 			
 			
+			/**
+			 * Destroy the AIR window 
+			 * 
+			 */				
 			protected function destroyWindow():void
 			{
 				if ( window != null )
@@ -569,7 +626,10 @@ package de.websector.utils.updater.ui
 			}
 			
 			
-			
+			/**
+			 * Dispose the ApplicationUpdaterUI and all its references, listener, etc. 
+			 * 
+			 */				
 			protected function dispose():void
 			{
 				hide();
@@ -578,7 +638,92 @@ package de.websector.utils.updater.ui
 			}
 			
 			
+			//--------------------------------------------------------------------------
+			//
+			// callbacks from view (skin)
+			//
+			//--------------------------------------------------------------------------			
 			
+			
+			/**
+			 * Callback for handling click events of the button0 which is in most of the skins on the left hand side.
+			 * @param 	event	MouseEvent		Event dispatched by button0  
+			 * 
+			 */				
+			protected function button0ClickHandler( event: MouseEvent ):void
+			{
+				switch( currentSkinState )
+				{
+					case STATE_CHECK_FOR_UPDATE:
+						// check now
+						appUpdater.checkNow();
+						break;
+					
+					case STATE_UPDATE_AVAILABLE:
+						// hide to download later
+						hide();
+						break;				
+					
+					case STATE_INSTALL_UPDATE:
+						// install now
+						isInstallPostponed = false;
+						appUpdater.installUpdate();
+						break;
+					
+					default:
+						
+						
+				}
+			}
+
+			/**
+			 * Callback for handling click events of the button1 which is in most of the skins on the right hand side.
+			 * @param 	event	MouseEvent		Event dispatched by button1  
+			 * 
+			 */	
+			protected function button1ClickHandler( event: MouseEvent ):void
+			{
+				
+				switch( currentSkinState )
+				{
+					case STATE_CHECK_FOR_UPDATE:
+						// cancel
+						hide();
+						break;
+					case STATE_UPDATE_NOT_AVAILABLE:
+						// close
+						hide();	
+						break;	
+					case STATE_UPDATE_AVAILABLE:
+						// download now
+						appUpdater.downloadUpdate();	
+						break;
+					case STATE_DOWNLOAD_PROGRESS:
+						// close
+						hide();
+						break;
+					
+					case STATE_INSTALL_UPDATE:
+						// install later
+						isInstallPostponed = true;
+						appUpdater.installUpdate();						
+						hide( false );
+						break;
+					
+					case STATE_UPDATE_ERROR:
+					case STATE_FILE_ERROR:
+					case STATE_UNEXPECTED_ERROR:
+					case STATE_DOWNLOAD_ERROR:
+						// close
+						hide();	
+						break;
+					
+					default:				
+						// close
+						hide();	
+						
+				}
+			}			
 			
 			//--------------------------------------------------------------------------
 			//
@@ -594,6 +739,12 @@ package de.websector.utils.updater.ui
 				return _configurationFile;
 			}
 			
+			/**
+			 * Configuration file which is used by ApplicationUpdater.
+			 * 
+			 * @param 	value	Boolean
+			 * 
+			 */				
 			public function set configurationFile(value:File):void
 			{
 				if ( value == null )
@@ -601,16 +752,24 @@ package de.websector.utils.updater.ui
 				
 				_configurationFile = value;	
 				//
-				// we do need an updater right now
+				// we do need to create an updater right now if not available
 				if ( !appUpdater )
 					initUpdater();
 			}
 			
+			
+
 			public function get useWindow():Boolean
 			{
 				return _useWindow;
 			}
-			
+
+			/**
+			 * Flag to use an AIR window for the view or not
+			 * 
+			 * @param 	value	Boolean
+			 * 
+			 */	
 			public function set useWindow(value:Boolean):void
 			{
 				_useWindow = value;
@@ -621,7 +780,13 @@ package de.websector.utils.updater.ui
 			{
 				return _invisibleCheck;
 			}
-			
+
+			/**
+			 * Flag to check without the need to show the view
+			 * 
+			 * @param 	value	Boolean
+			 * 
+			 */		
 			public function set invisibleCheck(value:Boolean):void
 			{
 				if ( value !== _invisibleCheck )
