@@ -18,7 +18,7 @@
 		<![CDATA[         
 			import mx.graphics.SolidColor;
 			
-			private static const CONTENT_BOX_WIDTH: int = 340;
+			private static const CONTENT_BOX_WIDTH: int = 320;
 			
 		]]>        
 	</fx:Script>
@@ -202,6 +202,7 @@
 				label="" labelWidth="0" fontSize="0"
 				trackSkin="de.websector.utils.updater.ui.skins.silver.ProgressBarTrackSkin"
 				barSkin="de.websector.utils.updater.ui.skins.silver.ProgressBarSkin"
+				mode="manual"
 				/>
 			
 			

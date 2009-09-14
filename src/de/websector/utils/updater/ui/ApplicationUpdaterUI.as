@@ -462,29 +462,28 @@ package de.websector.utils.updater.ui
 				}
 			}
 			
-			protected function updaterDownloadProgressHandler( event: ProgressEvent ):void 
-			{
-				setCurrentSkinState( STATE_DOWNLOAD_PROGRESS );
-				
-				if ( progressBar != null )
-				{
-					progressBar.setProgress( event.bytesLoaded, event.bytesTotal );
-				}
-			}
 			
 			protected function updaterDownloadStartHandler( event: UpdateEvent ):void 
 			{
 				setCurrentSkinState( STATE_DOWNLOAD_PROGRESS );
-				
+
+				if ( progressBar != null )
+					progressBar.setProgress( 0, 100 );
 			}
+			
+			protected function updaterDownloadProgressHandler( event: ProgressEvent ):void 
+			{			
+				if ( progressBar != null )
+					progressBar.setProgress( event.bytesLoaded, event.bytesTotal );
+			}
+			
 			
 			protected function updaterDownloadCompleteHandler( event: UpdateEvent ):void 
 			{
 				//
 				// avoid auto install
 				// because ( appUpdater.isInstallUpdateVisible ) doesn't work
-				event.preventDefault();	
-				
+				event.preventDefault();				
 				
 				setCurrentSkinState( STATE_INSTALL_UPDATE );
 			}

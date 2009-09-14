@@ -160,6 +160,7 @@
 		label="" labelWidth="0" fontSize="0"
 		trackSkin="de.websector.utils.updater.ui.skins.firefox.ProgressBarTrackSkin"
 		barSkin="de.websector.utils.updater.ui.skins.firefox.ProgressBarSkin"
+		mode="manual"
 		/>
 	
 	<s:Label
