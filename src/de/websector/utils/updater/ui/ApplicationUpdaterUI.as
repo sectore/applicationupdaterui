@@ -67,14 +67,14 @@ package de.websector.utils.updater.ui
 			protected var _useWindow: Boolean = false;
 			protected var isInstallPostponed: Boolean = false;
 			
-			
+			protected var updateAvailable: Boolean = false;
 			
 			protected var initializeAppUpdaterAndCheckNow: Boolean = false;
 			protected var appUpdaterInitialized: Boolean = false;
 			
 			
-			public var windowWidth: int = 200;
-			public var windowHeight: int = 200;
+			public var windowWidth: int = 500;
+			public var windowHeight: int = 310;
 			
 			[Bindable]
 			public var errorID: String = '';
@@ -193,7 +193,7 @@ package de.websector.utils.updater.ui
 			{		
 				if ( invisibleCheckChanged )
 				{
-					if ( invisibleCheck )
+					if ( invisibleCheck && !updateAvailable )
 						hide( false ); // dont stop update process of appUpdater
 					else
 						show();
@@ -445,8 +445,10 @@ package de.websector.utils.updater.ui
 			 * 
 			 */
 			protected function updaterStatusHandler( event : StatusUpdateEvent ):void
-			{			
-				if ( event.available )
+			{	
+				updateAvailable = event.available;
+				
+				if ( updateAvailable )
 				{
 					//
 					// avoid auto download
