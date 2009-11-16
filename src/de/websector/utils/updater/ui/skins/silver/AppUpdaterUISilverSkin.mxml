@@ -4,7 +4,7 @@
 	xmlns:fx="http://ns.adobe.com/mxml/2009" 
 	xmlns:s="library://ns.adobe.com/flex/spark" 
 	xmlns:mx="library://ns.adobe.com/flex/halo"
-	minWidth="500" minHeight="330"
+	minWidth="500" minHeight="290"
 	>
 	
 	<fx:Metadata>
@@ -65,6 +65,14 @@
 			stateGroups="errorState" 
 			/>
 		
+		<!-- required by Spark's Skin class, but is not in use -->
+		<s:State
+			name="disabled"
+			/>
+		<s:State
+			name="normal"
+			/>
+		
 		
 	</s:states>
 	
@@ -104,8 +112,8 @@
 	
 	
 	<s:Group
-		left="140" right="35"
-		top="45" bottom="35"
+		left="120" right="15"
+		top="25" bottom="25"
 		>
 		
 		<s:VGroup
@@ -160,9 +168,9 @@
 				includeIn="updateAvailable"
 				>
 				<s:content>			
-					<s:p><s:span fontStyle="bold">{ resourceManager.getString('ApplicationUpdaterDialogs', 'lblApplication' ) + ' '}</s:span> { hostComponent.appName }</s:p>
-					<s:p><s:span fontStyle="bold">{ resourceManager.getString('ApplicationUpdaterDialogs', 'lblInstalledVersion' ) + ' '}</s:span> { hostComponent.installedVersion }</s:p>
-					<s:p><s:span fontStyle="bold">{ resourceManager.getString('ApplicationUpdaterDialogs', 'lblAvailableVersion' ) + ' '}</s:span> { hostComponent.updateVersion }</s:p>
+					<s:p><s:span fontWeight="bold">{ resourceManager.getString('ApplicationUpdaterDialogs', 'lblApplication' ) + ' '}</s:span> { hostComponent.appName }</s:p>
+					<s:p><s:span fontWeight="bold">{ resourceManager.getString('ApplicationUpdaterDialogs', 'lblInstalledVersion' ) + ' '}</s:span> { hostComponent.installedVersion }</s:p>
+					<s:p><s:span fontWeight="bold">{ resourceManager.getString('ApplicationUpdaterDialogs', 'lblAvailableVersion' ) + ' '}</s:span> { hostComponent.updateVersion }</s:p>
 				</s:content>
 			</s:RichText>
 			

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<componentPackage>
 
+<componentPackage>
 
     <component id="ApplicationUpdaterUI" class="de.websector.utils.updater.ui.ApplicationUpdaterUI" />
     

@@ -1,13 +1,15 @@
 package de.websector.utils.updater.ui
 {
-		import de.websector.utils.updater.ui.skins.standard.AppUpdaterUIStandardSkin;
-		
 		import air.update.ApplicationUpdater;
 		import air.update.events.DownloadErrorEvent;
 		import air.update.events.StatusFileUpdateErrorEvent;
 		import air.update.events.StatusUpdateErrorEvent;
 		import air.update.events.StatusUpdateEvent;
 		import air.update.events.UpdateEvent;
+		
+		import com.adobe.utils.LocaleUtil;
+		
+		import de.websector.utils.updater.ui.skins.standard.AppUpdaterUIStandardSkin;
 		
 		import flash.desktop.NativeApplication;
 		import flash.events.ErrorEvent;
@@ -16,12 +18,12 @@ package de.websector.utils.updater.ui
 		import flash.filesystem.File;
 		
 		import mx.controls.ProgressBar;
+		import mx.styles.CSSStyleDeclaration;
 		
 		import spark.components.Button;
 		import spark.components.SkinnableContainer;
 		import spark.components.Window;
 		import spark.components.supportClasses.TextBase;
-		import com.adobe.utils.LocaleUtil;
 		
 		
 		/**
@@ -171,18 +173,40 @@ package de.websector.utils.updater.ui
 				
 				//
 				// default skin class
-				if( getStyle('skinClass') == undefined )
-					setStyle("skinClass", AppUpdaterUIStandardSkin);
+/*				if( getStyle('skinClass') == undefined )
+					setStyle("skinClass", AppUpdaterUIStandardSkin);*/
+				
+				initializeStyles();
 				
 			}			
 			
+			
+			/**
+			 * Initialize a default style definitions
+			 *  
+			 */
+			private function initializeStyles():void
+			{
+				var css: CSSStyleDeclaration = styleManager.getStyleDeclaration("de.websector.utils.updater.ui.ApplicationUpdaterUI");
+				
+				if ( !css )
+					css = new CSSStyleDeclaration();
+				
+				css.defaultFactory = function():void
+				{
+					this.skinClass = AppUpdaterUIStandardSkin;
+				}
+					
+				styleManager.setStyleDeclaration("de.websector.utils.updater.ui.ApplicationUpdaterUI", css, true);
+
+			}
 			
 			
 			//--------------------------------------------------------------------------
 			//
 			// life cycle
 			//
-			//--------------------------------------------------------------------------
+			//--------------------------------------------------------------------------			
 			
 			
 			/**
@@ -601,7 +625,7 @@ package de.websector.utils.updater.ui
 				window = new Window();
 				window.title = "Updating: " + getApplicationFileName();
 				window.width = windowWidth; 
-				window.height = windowHeight; 
+				window.height = windowHeight;			
 				
 				this.percentHeight = windowHeight;
 				this.percentWidth = windowWidth;

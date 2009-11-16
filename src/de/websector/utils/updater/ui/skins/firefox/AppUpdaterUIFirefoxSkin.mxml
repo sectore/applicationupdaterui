@@ -56,6 +56,15 @@
 		<s:State name="fileError" 
 				 stateGroups="errorState" 
 				 />		
+		
+		<!-- required by Spark's Skin class, but is not in use -->
+		<s:State
+			name="disabled"
+			/>
+		<s:State
+			name="normal"
+			/>
+		
 	</s:states>
 	
 	
