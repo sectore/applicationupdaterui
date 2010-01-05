@@ -496,9 +496,7 @@ package de.websector.utils.updater.ui
 					{
 						show();
 						setCurrentSkinState( STATE_UPDATE_NOT_AVAILABLE );
-					}
-					
-					
+					}	
 				}
 			}
 			
